@@ -1,0 +1,28 @@
+1 = multiplicand (74LS194)
+2 = multiplier   (74LS194)
+3 = partial sum (9bit register)
+4 = adder	(4bit Adder)
+5 = counter	(74LS163)
+
+1 receives multiplicand
+2 receives multiplier
+multiplier is shifted until a 1 is recognized
+1 is sent to syscontrol
+syscontrol sends multiplicand to adder
+adder sends to partial sum
+partial sum sends back to adder until counter says it is finished
+cycle repeats
+
+
+syscontrol clears multiplier/multiplicand,partial sum, counter
+syscontrol connects to the S0S1 inputs on 74LS194
+->this controls shifting,loading,holding of the inputs
+
+
+adder:
+S = partial sum + new multiplicand
+
+
+
+Testbench: 
+Use assertions, not waveforms (waveforms too hard)

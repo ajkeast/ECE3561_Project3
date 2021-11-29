@@ -26,3 +26,14 @@ S = partial sum + new multiplicand
 
 Testbench: 
 Use assertions, not waveforms (waveforms too hard)
+
+
+
+Alex
+.vhd for shift registers
+.vhd for system controller (both)
+
+Egemen
+.vhd for adder
+.vhd for counter
+.vhd for system controller (both)

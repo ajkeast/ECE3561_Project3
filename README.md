@@ -12,7 +12,7 @@ Goal is to construct the 4bit x 4bit multiplication circuit using **VHDL** code.
 ## Useful Links:
 ### Testing a single VHDL component in testbench
 http://blogs.plymouth.ac.uk/embedded-systems/fpga-and-vhdl/test-benches/part-1-single-architecture-test/
-### 4-bit adder
+### 4-bit adder in VHDL
 https://allaboutfpga.com/4-bit-ripple-carry-adder-vhdl-code/
-### Creating a shift register in VHDL
+### Shift register in VHDL
 https://vhdlwhiz.com/shift-register/

@@ -16,3 +16,10 @@ http://blogs.plymouth.ac.uk/embedded-systems/fpga-and-vhdl/test-benches/part-1-s
 https://allaboutfpga.com/4-bit-ripple-carry-adder-vhdl-code/
 ### Shift register in VHDL
 https://vhdlwhiz.com/shift-register/
+
+
+### 74LS194
+http://www.sycelectronica.com.ar/semiconductores/74LS194.pdf
+https://www.youtube.com/watch?v=ogzseb2nEag
+
+

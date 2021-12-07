@@ -19,7 +19,8 @@ https://vhdlwhiz.com/shift-register/
 
 
 ### 74LS194
-http://www.sycelectronica.com.ar/semiconductores/74LS194.pdf \n
+http://www.sycelectronica.com.ar/semiconductores/74LS194.pdf
+
 https://www.youtube.com/watch?v=ogzseb2nEag
 
 

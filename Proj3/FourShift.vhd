@@ -20,15 +20,6 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 
--- Uncomment the following library declaration if using
--- arithmetic functions with Signed or Unsigned values
---use IEEE.NUMERIC_STD.ALL;
-
--- Uncomment the following library declaration if instantiating
--- any Xilinx primitives in this code.
---library UNISIM;
---use UNISIM.VComponents.all;
-
 entity FourShift is
     Port ( CLK :	in	STD_LOGIC;
 			  D	:	in	STD_LOGIC_VECTOR (3 DOWNTO 0);
@@ -62,8 +53,22 @@ architecture Behavioral of FourShift is
 
 begin
 
+  main: PROCESS ( D, S, SRI, SLI, CLR, CLK, flw )
+  begin
+     If ( CLR = '0' ) then --! Asyncronous clear
+       flw <= "0000";
+     elsif ( K = '0' and K'event ) then --! Syncronous mode
+	
+       logic_pattern ( SLR, flw(1), flw(0), D(0), S, flw(0) ); 
+       logic_pattern ( flw(0), flw(2), flw(1), D(1), S, flw(1) );  
+       logic_pattern ( flw(1), flw(3), flw(2), D(2), S, flw(2) );   
+       logic_pattern ( flw(2), SLI, flw(3), D(3), S, flw(3) );
+    
+     end if;
+	 
 
-
-
-end Behavioral;
-
+  end process; -- main
+  
+  Q <= flw;
+  
+end architecture;

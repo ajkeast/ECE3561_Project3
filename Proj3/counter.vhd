@@ -38,7 +38,7 @@ entity counter is
 end counter;
 
 architecture Behavioral of counter is
-		signal count : unsigned(3 downto 0);
+		signal count : STD_LOGIC_VECTOR (3 downto 0);
 BEGIN
 	process(ENT, CLR, CLK)
 	begin

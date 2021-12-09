@@ -30,21 +30,15 @@ use IEEE.STD_LOGIC_1164.ALL;
 --use UNISIM.VComponents.all;
 
 entity top is
-    Port ( M : in STD_LOGIC_VECTOR (4 downto 1);
-           N : in  STD_LOGIC_VECTOR (4 downto 1);
+    Port ( Multiplier : in STD_LOGIC_VECTOR (3 downto 0);
+           Multiplicand : in  STD_LOGIC_VECTOR (3 downto 0);
            START : in  STD_LOGIC;
 			  CLK : in STD_LOGIC;
-           R : out  STD_LOGIC_VECTOR (8 downto 1);
+           Product : out  STD_LOGIC_VECTOR (7 downto 0);
            DONE : out  STD_LOGIC);
 end top;
 
 architecture Behavioral of top is
-signal QM: STD_LOGIC_VECTOR (3 downto 0);
-signal QN: STD_LOGIC; 
-signal Aout: STD_LOGIC_VECTOR (3 downto 0);
-signal Cout: STD_LOGIC_VECTOR (3 downto 0);
-
-
 
 component shift_4bit			--Multiplicand (M)
    Port ( clk : in  STD_LOGIC;
@@ -97,28 +91,48 @@ component sys_controller		-- System Controller
            DONE : out  STD_LOGIC);
 	end component;
 
+-- Internal Signals
+signal shift_9bit_in:	STD_LOGIC_VECTOR (8 downto 0);
+signal shift_9bit_out:	STD_LOGIC_VECTOR (8 downto 0);
 
+signal counter_out:		STD_LOGIC_VECTOR (3 downto 0);
+signal multiplier_out:	STD_LOGIC_VECTOR (3 downto 0);
+signal multiplicand_out:STD_LOGIC_VECTOR (3 downto 0);
+signal adder_out:			STD_LOGIC_VECTOR (3 downto 0);
+
+
+signal set1_out:			STD_LOGIC_VECTOR (1 downto 0);	
+signal set2_out:			STD_LOGIC_VECTOR (1 downto 0);	
+signal set3_out:			STD_LOGIC_VECTOR (1 downto 0);	
+
+signal CLR_RES_OUT:		STD_LOGIC;
+signal CLR_CNTR_OUT:		STD_LOGIC;
+signal EN_CNTR_OUT:		STD_LOGIC;
+signal DONE_OUT:			STD_LOGIC;
+signal C5_out:				STD_LOGIC;
 
 begin
 
 C: sys_controller	
-					port map(CLK => clk, START => start, QN => LSB, C4 => C4, S1 => S1, S2 => S2, S3 => S3, clr_res => clr_res, clr_cntr => clr_cntr, en_cntr => en_cntr, DONE => DONE)  
+					port map(clk,start,multiplicand_out(0),counter_out(2),set1_out,set2_out,set3_out,CLR_RES_OUT,CLR_CNTR_OUT,EN_CNTR_OUT,DONE_OUT);  
 
 T: counter
-					port map(Clk => CLK, en_cntr => ENT, clr_cntr => CLR, C4 => Q(2))
+					port map(CLR_CNTR_OUT,clk,EN_CNTR_OUT,counter_out);
 					
 A: adder
-				   port map(QM => X, R(7 downto 4) => Y, Aout => S, '0' => C1)
+				   port map(multiplier_out,shift_9bit_out(7 downto 4),'0',adder_out,C5_out);
 
-M: shift_4bit
-					port map(CLK => clk, S1 => sel, M => d, QM => q, '1' => clr, '0' => sri, '0' => sli)
+M: shift_4bit --Multiplier
+					port map(clk,'1',set1_out,Multiplier,multiplier_out,'0','0');
 
-N: shift_4bit
-					port map(CLK => clk, S2 => sel, N => d, QN => q(0), '1' => clr, '0' => sri, '0' => sli)
+N: shift_4bit --Multiplicand
+					port map(clk,'1',set2_out,Multiplicand,multiplicand_out,'0','0');
+
+shift_9bit_in <= c5_out & adder_out & shift_9bit_out(3 downto 0);
 
 Reg: shift_9bit 
-					port map(CLK => clk, clr_res => clr, S3 => sel, Aout => d(7 downto 4), R(9 downto 1) => q(7 downto 0), C5 => d(8), '0' => sri, '0' = sli)
+					port map(clk,CLR_RES_OUT,set3_out,shift_9bit_in,shift_9bit_out,'0','0') ;
 					
---Product <= QS(7 downto 0);
+Product <= shift_9bit_out(7 downto 0);
 
 end Behavioral;
